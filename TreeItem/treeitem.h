@@ -11,6 +11,14 @@
 #include <QMenu>
 #include <QPoint>
 #include <QDebug>
+#include "adddialog.h"
+#include <QString>
+#include <QListWidget>
+#include <QListWidgetItem>
+#include <QLineEdit>
+#include <QWidget>
+#include <QVector>
+
 class QAction;
 namespace Ui {
 class TreeItem;
@@ -23,31 +31,53 @@ class TreeItem : public QMainWindow
 public:
     explicit TreeItem(QWidget *parent = 0);
     ~TreeItem();
+    QString receiveData;
 //void TreeItem::AddItem();
 private slots:
-void addItems();
+void addParentNode();
+void addChildNode(QTreeWidgetItem *item);
 void deleteItems();
-void selectImages();
-void selectFolder();
-void removeSelectedImages();
-void removeAllImages();
+
+void addGroup();
+void changeGroup();
+void load();
+void deleteGroup();
+
+void changePara();
+void savePara();
+void usePara();
+void deleteMach();
+
 void SlotItemClicked(QTreeWidgetItem *item, int column);
+void contextMenuEvent ( QContextMenuEvent * event );
+void mouseReleaseEvent(QMouseEvent * event);
+void receiceData(QString data);
+
+//QVector<QTreeWidgetItem*> Nodes;
+//QVector<QString> strArray;
+
 private:
     Ui::TreeItem *ui;
     QTreeWidget *treeWidget;
     QDockWidget *dockWidget1;
     QDockWidget *dockWidget2;
+    QDockWidget *dockWidget3;
     QPushButton *AddButton;
     QPushButton *DeleteButton;
     QMenu *pop_menu;
-    QAction *add_images_action;
-    QAction *add_folder_action;
-    QAction *remove_selected_action;
-    QAction *remove_all_action;
-    QAction *save_images_action;
-    QAction *save_folder_action;
-    QAction *save_selected_action;
-    QAction *save_all_action;
+    QAction *addGroupAction;
+    QAction *changeGroupAction;
+    QAction *loadAction;
+    QAction *deleteGroupAction;
+    QAction *saveParaAction;
+    QAction *useParaAction;
+    QAction *changeParaAction;
+    QAction *deleteMachAction;
+    QListWidget *msgList;
+    QLineEdit *edit;
+    QTreeWidgetItem *initItem;
+    QTreeWidgetItem *pCurrentItem;
+
     void createActionsParent();
     void createActionsChild();
  //   void contextMenuEvent(QContextMenuEvent *event);
