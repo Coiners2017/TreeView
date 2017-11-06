@@ -14,9 +14,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         treeitem.cpp \
-    adddialog.cpp
+    adddialog.cpp \
+    mytab.cpp
 
 HEADERS  += treeitem.h \
-    adddialog.h
+    adddialog.h \
+    mytab.h
 
 FORMS    += treeitem.ui
