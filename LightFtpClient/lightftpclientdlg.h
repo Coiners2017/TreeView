@@ -10,6 +10,7 @@
 #include <QLineEdit>
 #include <QDir>
 #include <QStringListModel>
+#include <QListWidgetItem>
 namespace Ui {
 class LightFtpClientDlg;
 }
@@ -22,6 +23,9 @@ public:
     explicit LightFtpClientDlg(QWidget *parent = 0);
     ~LightFtpClientDlg();
 void locDir();
+private slots:
+    void  deleBtn_clicked();
+    void  renameBtn_clicked();
 private:
     Ui::LightFtpClientDlg *ui;
     QListWidget *locList;

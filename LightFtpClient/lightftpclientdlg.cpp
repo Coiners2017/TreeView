@@ -43,32 +43,21 @@ LightFtpClientDlg::LightFtpClientDlg(QWidget *parent) :
     leftLayout->addWidget(serverLab,0,col_Content);
     leftLayout->addWidget(deleteBtn,1,col_Lab);
     leftLayout->addWidget(renameBtn,1,col_Content);
-
-    //Right Layout:
-    //QGridLayout *rightLayout = new QGridLayout;
-    //rightLayout->addStretch();  //添加一个占位符
     leftLayout->addWidget(connectBtn,2,0);
     leftLayout->addWidget(disConnectBtn,2,1);
     leftLayout->addWidget(ipAddrLab,3,0);
     leftLayout->addWidget(ipWidget,3,1);
+    leftLayout->addWidget(pathEdit,4,1);
+    leftLayout->addWidget(locList,5,0);
+    leftLayout->addWidget(remoteList,5,1);
 
-    //Bottom Layout:
-    //QGridLayout *bottomLayout = new QGridLayout;
-    //bottomLayout->addStretch();  //添加一个占位符
-    leftLayout->addWidget(locList,4,0);
-    leftLayout->addWidget(remoteList,4,1);
-    leftLayout->addWidget(pathEdit,5,0,1,2);
-    //leftLayout->setSpacing(10);
-    //Main Layout:
-    //QGridLayout *mainLayout = new QGridLayout(this);
-    //mainLayout->addLayout(leftLayout,0,0);
-    //mainLayout->addLayout(rightLayout,0,1);
-    //mainLayout->addLayout(bottomLayout,1,0,1,2);
     leftLayout->setMargin(15);
     leftLayout->setSpacing(10);
     pWidget->setLayout(leftLayout);//设置Widget窗口控件的布局风格
-    //pWidget->setWindowTitle(QObject::tr("查找文件及文件夹"));
+
     locDir();
+    connect(deleteBtn,SIGNAL(clicked()),this,SLOT(deleBtn_clicked()));
+    connect(renameBtn, SIGNAL(clicked()),this, SLOT(renameBtn_clicked()));
 }
 
 LightFtpClientDlg::~LightFtpClientDlg()
@@ -76,28 +65,42 @@ LightFtpClientDlg::~LightFtpClientDlg()
     delete ui;
 }
 void LightFtpClientDlg::locDir()
-{
-   QString path = pathEdit->text();
-   if(path=="")
-    {
-       QDir dir(tr("D:"));
-    }
-   else
-       QDir dir(tr("D:"));
-
-       // qDebug() << "dir start " << dir << "dir end";
-
-        QStringList infolist = dir.entryList(QDir::NoDotAndDotDot | QDir::AllEntries);
-
-        for(int i=0; i<infolist.size(); i++)
-
-            //qDebug() << infolist.at(i);
-            locList->addItem(infolist.at(i));
-
+{   
+    QDir mDir("C:/Qt");
+    if (!mDir.exists())
+        return ;
+    mDir.setFilter(QDir::Dirs|QDir::Files);
+    mDir.setSorting(QDir::DirsFirst);
+    qDebug() << "dir start " << mDir << "dir end";
+    QStringList infolist = mDir.entryList(QDir::NoDotAndDotDot | QDir::AllEntries);//NoDotAndDotDot隐藏.和.. 避免死循环
+    for(int i=0; i<infolist.size(); i++)
+        //qDebug() << infolist.at(i);
+        locList->addItem(infolist.at(i));
+    pathEdit->setText(mDir.absolutePath());
 }
 
+void  LightFtpClientDlg::deleBtn_clicked()                  //删除listWidget所选项
+{
+    if(locList->currentItem()!=Q_NULLPTR)
+    {
+        QListWidgetItem *item = locList->takeItem(locList->currentRow());
+        //删除实际文件
+        QString selFileName = item->text();
+        QString absPath = pathEdit->text();
+        if(!absPath.endsWith("/"))absPath+="/";
+        selFileName=absPath+selFileName;
+        bool result = QFile::remove(selFileName);
+        delete item;
+    }
+}
 
-
+void  LightFtpClientDlg::renameBtn_clicked()                //修改listWidget所选项名称
+{
+    if(locList->currentItem()!=Q_NULLPTR)
+    {
+        locList->currentItem()->setText(tr("Modify :Item ") +QString::number(locList->count()));
+    }
+}
 //QStringList DirFileListXml(QString xmlName,QString Path) //文件list
 
 //{	//xmlName 文件类型 Path 路径
