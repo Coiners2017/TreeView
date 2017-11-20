@@ -24,8 +24,9 @@ public:
     ~LightFtpClientDlg();
 void locDir();
 private slots:
-    void  deleBtn_clicked();
-    void  renameBtn_clicked();
+    void deleBtn_clicked();
+    void renameBtn_clicked();
+    void ftpConnect();
 private:
     Ui::LightFtpClientDlg *ui;
     QListWidget *locList;
@@ -37,7 +38,10 @@ private:
     QLabel *clientLab;
     QLabel *serverLab;
     QLabel *ipAddrLab;
+    QLabel *localFileAddrLab;
+    QLabel *msgTipLab;
     QLineEdit *pathEdit;
+    QLineEdit *msgInfoEdit;
     QString InitPath = "D:";
 };
 

@@ -6,8 +6,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    //LightFtpClientDlg w;
-    ClientConn conn;
-    //w.show();
+    LightFtpClientDlg w;
+    //ClientConn conn;
+    w.show();
     return a.exec();
 }
